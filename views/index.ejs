@@ -15,19 +15,19 @@
              <%- include('header.ejs') %>
              
              <form class="text-xl ">
-                <div class="flex gap-2 px-3">
+                <div class="flex gap-1 px-6 my-5">
                     <div class="flex-auto">
-                        <input type="text" placeholder="What's next?" class="border border-grey-300 rounded text-grey-300 w-full p-2 text-base" required />
+                        <input type="text" placeholder="What's next?" class="border border-grey-500 rounded text-grey-500 w-full p-2 text-base" required />
                     </div>
-                    <div class="felx-auto ">
-                        <input type="date" class="border border-grey-300 rounded text-grey-300 w-full p-2 text-base " />
+                    <div class="felx-auto text-gray-500">
+                        <input type="date" class="border border-grey-300 rounded w-full p-2 text-base " />
                     </div>
                     <div class="flex-auto">
                         <button type="submit" class="bg-green-600 text-white px-5 py-2 rounded w-full text-base">Add</button>
                     </div>
                 </div>
              </form>
-
+             <%- include('todos.ejs') %>
         </div>
      </div>
  </body>
