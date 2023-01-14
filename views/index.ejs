@@ -1,34 +1,26 @@
 <!DOCTYPE html>
- <html lang="en">
- <head>
-     <meta charset="UTF-8">
-     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="./css/styles.css" rel="stylesheet">
-    <title>To-do Manager</title>
- </head>
- <body>
-     <div class="grid grid-cols-6">
-         <div class="col-start-3 col-span-2">
-             
-             <%- include('header.ejs') %>
-             
-             <form class="text-xl ">
-                <div class="flex gap-1 px-6 my-5">
-                    <div class="flex-auto">
-                        <input type="text" placeholder="What's next?" class="border border-grey-500 rounded text-grey-500 w-full p-2 text-base" required />
-                    </div>
-                    <div class="felx-auto text-gray-500">
-                        <input type="date" class="border border-grey-300 rounded w-full p-2 text-base " />
-                    </div>
-                    <div class="flex-auto">
-                        <button type="submit" class="bg-green-600 text-white px-5 py-2 rounded w-full text-base">Add</button>
-                    </div>
-                </div>
-             </form>
-             <%- include('todos.ejs') %>
-        </div>
-     </div>
- </body>
- </html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="<%= csrfToken %>">
+  <title>
+    <%= title %>
+  </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+
+<body>
+  <div class="grid grid-cols-6">
+    <div class="col-start-3 col-span-2">
+      <%- include('header.ejs') %>
+      <p class="py-2">Welcome to the TO-DO manager</p>
+      <p class="py-2">New here? <a href="/signup" class="text-green-600">Sign-up now</a></p>
+      <p class="py-2">Already have an account? <a href="/login" class="text-green-600">Sign-in</a></p>
+    </div>
+  </div>
+</body>
+
+</html>
