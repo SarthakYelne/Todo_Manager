@@ -87,9 +87,7 @@ passport.deserializeUser((id, done) => {
 
 const { Todo, User } = require("./models");
 
-app.get(
-  "/",
-  connectEnsureLogin.ensureLoggedOut({
+app.get("/", connectEnsureLogin.ensureLoggedOut({
     redirectTo: "/todos",
   }),
   async (request, response) => {
@@ -100,10 +98,7 @@ app.get(
   }
 );
 
-app.get(
-  "/todos",
-  connectEnsureLogin.ensureLoggedIn(),
-  async (request, response) => {
+app.get("/todos", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     const loggedInUser = request.user.id;
     const overdue = await Todo.overdue(loggedInUser);
     const dueToday = await Todo.dueToday(loggedInUser);
@@ -172,9 +167,7 @@ app.get("/login", (request, response) => {
   response.render("login", { title: "Login", csrfToken: request.csrfToken() });
 });
 
-app.post(
-  "/session",
-  passport.authenticate("local", {
+app.post("/session", passport.authenticate("local", {
     failureRedirect: "/login",
     failureFlash: true,
   }),
@@ -193,10 +186,7 @@ app.get("/signout", (request, response, next) => {
   });
 });
 
-app.post(
-  "/todos",
-  connectEnsureLogin.ensureLoggedIn(),
-  async (request, response) => {
+app.post("/todos", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     try {
       await Todo.addTodo({
         title: request.body.title,
@@ -213,10 +203,7 @@ app.post(
 );
 
 // PUT http://mytodoapp.com/todos/123/
-app.put(
-  "/todos/:id",
-  connectEnsureLogin.ensureLoggedIn(),
-  async (request, response) => {
+app.put("/todos/:id", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     // console.log("We have to update a todo with ID:", request.params.id);
     const todo = await Todo.findByPk(request.params.id);
     if (todo.userId !== request.user.id) {
@@ -235,10 +222,7 @@ app.put(
 );
 
 // eslint-disable-next-line no-unused-vars
-app.delete(
-  "/todos/:id",
-  connectEnsureLogin.ensureLoggedIn(),
-  async (request, response) => {
+app.delete("/todos/:id", connectEnsureLogin.ensureLoggedIn(), async (request, response) => {
     try {
       const deletedRows = await Todo.remove(request.params.id, request.user.id);
       return response.json({ success: deletedRows > 0 });
