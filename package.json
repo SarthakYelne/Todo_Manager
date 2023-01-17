@@ -8,12 +8,6 @@
     "pretest": "NODE_ENV=test npx sequelize-cli db:drop && NODE_ENV=test npx sequelize-cli db:create && NODE_ENV=test npx sequelize-cli db:migrate",
     "test": "NODE_ENV=test jest --json --outputFile=results.json --detectOpenHandles"
   },
-  "lint-staged": {
-    "*.js": [
-      "eslint",
-      "prettier --write ."
-    ]
-  },
   "author": "Sarthak Yelne <sarthakyelne2003@gmail.com>",
   "license": "ISC",
   "dependencies": {
