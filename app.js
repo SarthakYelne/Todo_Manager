@@ -68,7 +68,7 @@ app.get("/todos/:id", async function (request, response) {
 app.post("/todos", async function (request, response) {
   console.log("Creating new Todo: ", request.body);
   try {
-    const todo = await Todo.addTodo(request.body);
+    await Todo.addTodo(request.body);
     return response.redirect("/");
   } catch (error) {
     console.log(error);
