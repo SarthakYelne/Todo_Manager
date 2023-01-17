@@ -1,4 +1,3 @@
-
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -69,7 +68,6 @@ app.put("/todos/:id", async (request, response) => {
 
 // eslint-disable-next-line no-unused-vars
 app.delete("/todos/:id", async (request, response) => {
-  console.log("Delete a todo by id",request.params.id);
   try {
     await Todo.remove(request.params.id);
     return response.json({ success: true });
