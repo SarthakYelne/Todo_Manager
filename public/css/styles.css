@@ -4,3 +4,7 @@ body{
     color: rgb(240, 87, 36);
     font-family:Georgia, 'Times New Roman', Times, serif;
 }
+
+.Todo-Item:hover .trash-icon {
+    display: block;
+}

@@ -1,74 +1,53 @@
+
 const express = require("express");
 const app = express();
-const Sequelize = require("sequelize");
-const { Todo } = require("./models");
 const bodyParser = require("body-parser");
-const Op = Sequelize.Op;
-const todo = require("./models/todo");
-
+var cookieParser = require("cookie-parser");
+const path = require("path");
+var csrf = require("tiny-csrf");
 app.use(bodyParser.json());
+
+// Set EJS as view engine
+app.set("view engine", "ejs");
+
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser("shh! some secret string"));
+app.use(csrf("this_should_be_32_character_long", ["POST", "PUT", "DELETE"]));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/todos", async function (request, response) {
-  console.log("Processing list of all Todos ...");
-  try {
-    // create a todo
-    const date = new Date();
-    await Todo.addTodo({ title: title, dueDate: date, completed: false });
+const { Todo } = require("./models");
 
-    const todos = await Todo.findAll();
-    console.log(todos);
-    const d = new Date().toLocaleDateString("en-CA");
-    const overdue = await Todo.findAll({
-      where: { dueDate: { [Op.lt]: d }, completed: false },
-      order: [["id", "ASC"]],
+app.get("/", async (request, response) => {
+  const overdue = await Todo.overdue();
+  const dueToday = await Todo.dueToday();
+  const dueLater = await Todo.dueLater();
+  const completed = await Todo.completed();
+  if (request.accepts("html")) {
+    response.render("index", {
+      title: "Todo application",
+      overdue,
+      dueToday,
+      dueLater,
+      completed,
+      csrfToken: request.csrfToken(),
     });
-    const overdueComplete = await Todo.findAll({
-      where: { dueDate: { [Op.lt]: d }, completed: true },
+  } else {
+    response.json({
+      overdue,
+      dueToday,
+      dueLater,
+      completed,
     });
-    const later = await Todo.findAll({
-      where: { dueDate: { [Op.gt]: d } },
-    });
-    const laterComplete = await Todo.findAll({
-      where: { dueDate: { [Op.gt]: d }, completed: true },
-    });
-    const today = await Todo.findAll({
-      where: { dueDate: { [Op.eq]: d } },
-    });
-    const todayComplete = await Todo.findAll({
-      where: { dueDate: { [Op.eq]: d }, completed: true },
-    });
-
-    app.locals.tasks = todos;
-    app.locals.overdue = overdue;
-    app.locals.overdueComplete = overdueComplete;
-    app.locals.later = later;
-    app.locals.laterComplete = laterComplete;
-    app.locals.today = today;
-    app.locals.todayComplete = todayComplete;
-
-    response.render("index");
-  } catch (error) {
-    console.log(error);
-    return response.status(422).json(error);
   }
 });
 
-app.get("/todos/:id", async function (request, response) {
-  console.log("Looking for Todo with ID: ", request.params.id);
+app.post("/todos", async (request, response) => {
   try {
-    const todo = await todo.findByPk(request.params.id);
-    return response.json(todo);
-  } catch (error) {
-    console.log(error);
-    return response.status(422).json(error);
-  }
-});
-
-app.post("/todos", async function (request, response) {
-  console.log("Creating new Todo: ", request.body);
-  try {
-    await Todo.addTodo(request.body);
+    await Todo.addTodo({
+      title: request.body.title,
+      dueDate: request.body.dueDate,
+    });
     return response.redirect("/");
   } catch (error) {
     console.log(error);
@@ -76,11 +55,11 @@ app.post("/todos", async function (request, response) {
   }
 });
 
-app.put("/todos/:id/markAsCompleted", async function (request, response) {
-  console.log("We have to update a Todo with ID: ", request.params.id);
+// PUT http://mytodoapp.com/todos/123/
+app.put("/todos/:id", async (request, response) => {
   const todo = await Todo.findByPk(request.params.id);
   try {
-    const updatedTodo = await todo.markAsCompleted();
+    const updatedTodo = await todo.setCompletionStatus(request.body.completed);
     return response.json(updatedTodo);
   } catch (error) {
     console.log(error);
@@ -88,21 +67,15 @@ app.put("/todos/:id/markAsCompleted", async function (request, response) {
   }
 });
 
-app.delete("/todos/:id", async function (request, response) {
-  console.log("We have to delete a Todo with ID: ", request.params.id);
+// eslint-disable-next-line no-unused-vars
+app.delete("/todos/:id", async (request, response) => {
+  console.log("Delete a todo by id",request.params.id);
   try {
-    const todo = await todo.findByPk(request.params.id);
-    todo.delete();
-    return response.json(todo);
+    await Todo.remove(request.params.id);
+    return response.json({ success: true });
   } catch (error) {
-    console.log(error);
     return response.status(422).json(error);
   }
-});
-
-app.get("/", (request, response) => {
-  app.locals.tasks = [{ title: "taks 1" }, { title: "task 2" }];
-  response.render("index");
 });
 
 module.exports = app;
