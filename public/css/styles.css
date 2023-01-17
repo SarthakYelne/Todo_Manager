@@ -1,10 +1,6 @@
 body{
     font-size: x-large;
     background-color: rgb(242, 237, 230);
-    color: rgb(238, 86, 36);
+    color: rgb(240, 87, 36);
     font-family:Georgia, 'Times New Roman', Times, serif;
-}
-
-.Todo-Item:hover .trash-icon {
-    display: block;
 }

@@ -2,19 +2,22 @@
   "development": {
     "username": "postgres",
     "password": "ubuntu",
-    "database": "todo-dev",
+    "database": "wd-todo_dev",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
     "password": "ubuntu",
-    "database": "todo-test",
+    "database": "wd-todo_test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
-    "use_env_variable":"DATABASE_URL",
-    "dialect":"postgres"
+    "username": "postgres",
+    "password": "ubuntu",
+    "database": "todo-prod",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
   }
 }
