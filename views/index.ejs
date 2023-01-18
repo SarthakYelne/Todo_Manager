@@ -10,64 +10,15 @@
   </title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/css/styles.css" />
-  <script>
-    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    function updateTodo(id, completionStatus) {
-      fetch(`/todos/${id}`, {
-        method: 'put',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          completed: completionStatus,
-          "_csrf": token
-        })
-      }).then((res) => {
-        window.location.reload(true);
-      }).catch(err => console.error(err))
-    }
-    function deleteTodo(id) {
-      console.log(id);
-      fetch(`/todos/${id}`, {
-        method: 'delete',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "_csrf": token
-        })
-      }).then((res) => {
-        window.location.reload();
-      }).catch(err => console.error(err))
-    }
-  </script>
 </head>
 
 <body>
-  <div class="grid grid-cols-7">
-    <div class="col-start-3 col-span-3">
-      <%- include('header.ejs') %>
-      <form action="/todos" method="POST">
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        <div class="flex gap-1 py-3">
-          <div class="flex items-center text-xl my-1 px-2 ">
-            <input type="text" placeholder="What's next?" name="title" class="non-italic hover rounded hover:bg-purple-90 flex items-center text-xl text-center w-fit my-2 px-5 py-2 rounded hover:bg-purple-90" required />
-          </div>
-          <div class="flex items-center text-xl col-span-1 my-1 px-2">
-            <input type="date" name="dueDate" class="italic rounded hover:bg-purple-90  mr-2 border border-gray-200 text-gray-400 text-base px-6 py-3 rounded w-full p-2" />
-          </div>
-          <div class="flex items-center items-center text-xl text-center py-4">
-            <button type="submit" class="text-white bg-green-600 hover:bg-green-700 font-medium rounded text-medium px-10 py-2 p-2 mr-1 mb-1">Add</button>
-          </div>
-        </div>
-      </form>
-      <div>
-        <%- include('todos.ejs', {title: "Overdue" , data: overdue}) %>
-        <%- include('todos.ejs', {title: "Due Today" , data: dueToday}) %>
-        <%- include('todos.ejs', {title: "Due Later" , data: dueLater}) %>
-        <%- include('todos.ejs', {title: "Completed items" , data: completed}) %>
-
-      </div>
+  <div class="grid grid-cols-6">
+    <div class="col-start-3 col-span-2 p-4">
+        <%- include('header.ejs') %>
+      <p class="py-6 p-3 text-5xl mt-px">Welcome to The TO-DO Manager</p>
+      <p class="py-2 p-3">New here? <a href="/signup" class="text-green-600 font-extralight antialiased text-lb">Sign-up now</a></p>
+      <p class="py-2 p-3">Already have an account? <a href="/login" class="text-green-600 font-extralight antialiased text-lb">Sign-in</a></p>
     </div>
   </div>
 </body>
