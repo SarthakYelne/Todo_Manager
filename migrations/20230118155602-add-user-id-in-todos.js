@@ -2,12 +2,12 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.addColumn("Todos", "userid", {
+    await queryInterface.addColumn("Todos", "userId", {
       type: Sequelize.DataTypes.INTEGER,
     });
 
     await queryInterface.addConstraint("Todos", {
-      fields: ["userid"],
+      fields: ["userId"],
       type: "foreign key",
       references: {
         table: "Users",
@@ -23,6 +23,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeColumn("Todos", "userid");
+    await queryInterface.removeColumn("Todos", "userId");
   },
 };
