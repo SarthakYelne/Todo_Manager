@@ -1,4 +1,3 @@
-
 "use strict";
 const { Model, Op } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
@@ -11,75 +10,60 @@ module.exports = (sequelize, DataTypes) => {
     // eslint-disable-next-line no-unused-vars
     static associate(models) {
       Todo.belongsTo(models.User, {
-        foreignKey: "userId",
-      });
-      // define association here
+        foreignKey: 'idUser'
+      })
     }
 
-    static addTodo({ title, dueDate, userId }) {
-      return this.create({
-        title: title,
-        dueDate: dueDate,
-        completed: false,
-        userId,
-      });
+    static addTodo({ title, dueDate }) {
+      return this.create({ title: title, dueDate: dueDate, completed: false });
     }
 
-    static async overdue(userId) {
+    static async overdue() {
       return this.findAll({
         where: {
           dueDate: {
             [Op.lt]: new Date(),
           },
           completed: false,
-          userId,
         },
       });
     }
 
-    static async dueLater(userId) {
+    static async dueLater() {
       return this.findAll({
         where: {
           dueDate: {
             [Op.gt]: new Date(),
           },
           completed: false,
-          userId,
         },
       });
     }
 
-    static async dueToday(userId) {
+    static async dueToday() {
       return this.findAll({
         where: {
           dueDate: {
             [Op.eq]: new Date(),
           },
           completed: false,
-          userId,
         },
       });
     }
 
-    static async completed(userId) {
+    static async completed() {
       return this.findAll({
         where: {
           completed: true,
-          userId,
         },
       });
     }
-    static async remove(id, userId) {
+    static async remove(id) {
       return this.destroy({
         where: {
           id,
-          userId,
         },
       });
-    }
-
-    markAsCompleted() {
-      return this.update({ completed: true });
     }
 
     setCompletionStatus(completed) {
@@ -88,24 +72,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Todo.init(
     {
-      title: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: true,
-          len: {
-            args: 5,
-            msg: "Title should be of minimum length 5",
-          },
-        },
-      },
-      dueDate: {
-        type: DataTypes.DATEONLY,
-        allowNull: false,
-        validate: {
-          notNull: true,
-        },
-      },
+      title: DataTypes.STRING,
+      dueDate: DataTypes.DATEONLY,
       completed: DataTypes.BOOLEAN,
     },
     {
