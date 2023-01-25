@@ -38,10 +38,9 @@
     }
   </script>
 </head>
-
 <body>
-  <div class="grid grid-cols-6">
-    <div class="col-start-3 col-span-2">
+  <div class="grid grid-cols-3">
+    <div class="col-start-2 col-span-2">
       <%- include('header.ejs') %>
       <% if(messages && messages.error && messages.error.length > 0)  { %>
         <% for(var i=0; i<messages.error.length; i++) { %>
@@ -52,13 +51,13 @@
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <div class="flex gap-1 py-3">
               <div class="flex items-center text-l mb-2 pt-0.125 pl-6.5">
-                <input type="text" placeholder="What's next?" name="title" class="w-6 leading-8 non-italic hover rounded hover:bg-purple-90 flex items-center text-xl text-center w-fit my-3 py-2 rounded hover:bg-purple-90" required />
+                <input type="text" placeholder="What's next?" name="title" class="w-6 leading-8 non-italic hover rounded hover:bg-purple-90 flex items-center text-orange-600 text-xl text-center w-fit my-3 px-2 py-2 rounded hover:bg-purple-90" required />
               </div>
-              <div class="flex items-center text-xl col-span-2 my-2 py-1">
-                <input type="date" name="dueDate" class=" leading-4 pb-3 italic rounded hover:bg-purple-90  mr-2 border border-gray-200 text-gray-400 text-base px-6 py-3 rounded p-2 mr-2 mb-1" />
+              <div class="flex items-center text-xl pb-4 py-2.5 my-1">
+                <input type="date" name="dueDate" class=" leading-4 pb-3 italic rounded hover:bg-purple-90 border border-gray-200 text-orange-600 text-base rounded p-3 mr-1 mb-1" />
               </div>
-              <div class="flex items-center items-center text-xl text-center py-2">
-                <button type="submit" class="text-white bg-green-600 hover:bg-green-700 font-medium rounded text-medium px-10 py-2 p-2 mr-1 mb-1">Add</button>
+              <div class="flex items-center text-xl text-center pb-3 py-2">
+                <button type="submit" class="text-white bg-green-600 hover:bg-green-700 font-medium rounded text-medium px-12 py-2.5 mr-1 mb-1">Add</button>
               </div>
             </div>
           </form>
